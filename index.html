@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cards Recargas</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5b21b6">
+<link rel="apple-touch-icon" href="img/cr4-apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cards Recargas">
+<link rel="icon" href="img/cr4-icon-192.png">
+<script src="config.js?_cb=3"></script>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;
+    background:#1b1145;
+    background-image:
+      radial-gradient(60% 50% at 18% 16%,#3b82f6 0,transparent 60%),
+      radial-gradient(60% 50% at 86% 22%,#ec4899 0,transparent 60%),
+      radial-gradient(70% 60% at 28% 96%,#8b5cf6 0,transparent 62%),
+      radial-gradient(60% 55% at 94% 92%,#06b6d4 0,transparent 60%);
+    min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:30px 26px;gap:16px}
+  .logo{width:118px;height:118px;border-radius:28px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+  h1{font-size:1.7rem;margin:.3rem 0 0;letter-spacing:.4px}
+  #status{margin:0;opacity:.94;max-width:340px;line-height:1.45}
+  .spin{width:32px;height:32px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:330px;margin-top:4px}
+  .btn{position:relative;display:flex;align-items:center;justify-content:center;text-decoration:none;
+    font-weight:800;font-size:1.06rem;padding:16px 18px;border-radius:16px;color:#fff;border:0;cursor:pointer;
+    font-family:inherit;width:100%}
+  .btn .n{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;
+    background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800}
+  .store{background:linear-gradient(135deg,#2563eb,#0ea5e9,#06b6d4)}
+  .store .n{color:#0c4a6e}
+  .wpp{background:#25D366}
+  .wpp .n{color:#0b6b34}
+  .retry{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);font-weight:700}
+  .install{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);font-weight:700;font-size:.98rem;padding:13px 18px}
+  .num{font-size:.85rem;opacity:.85;margin-top:2px}
+  .ios{font-size:.85rem;opacity:.9;max-width:320px;line-height:1.4;margin:2px 0 0}
+  .hide{display:none}
+</style>
+</head>
+<body>
+  <img class="logo" src="img/cr4-icon-512.png" alt="Cards Recargas">
+  <h1>Cards Recargas</h1>
+  <p id="status">Abrindo a loja…</p>
+  <div class="spin" id="spin"></div>
+  <div class="btns">
+    <a class="btn store hide" id="storeBtn" href="#" rel="noopener"><span class="n">1</span><span>Entrar na loja</span></a>
+    <a class="btn wpp" id="wppBtn" href="#" rel="noopener"><span class="n">2</span><span>Falar no WhatsApp</span></a>
+    <button class="btn retry hide" id="retryBtn" type="button">Tentar de novo</button>
+    <button class="btn install hide" id="installBtn" type="button">⬇️ Baixar app de recargas</button>
+  </div>
+  <div class="num" id="num"></div>
+  <p class="ios hide" id="iosHint">No iPhone: toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b> para instalar.</p>
+
+<script>
+(function(){
+  var cfg = window.CR_CONFIG || {};
+  var domains = (cfg.domains && cfg.domains.length) ? cfg.domains.slice() : ["https://unitvmensal.com"];
+  var wpp = cfg.whatsapp || "https://wa.me/5541987316829";
+  var num = cfg.whatsappNumber || "";
+  document.getElementById('wppBtn').href = wpp;
+  if(num){ document.getElementById('num').textContent = "WhatsApp " + num; }
+
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
+                   || window.navigator.standalone === true;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferred = e;
+    if(!standalone){ document.getElementById('installBtn').classList.remove('hide'); }
+  });
+  document.getElementById('installBtn').addEventListener('click', function(){
+    if(deferred){ deferred.prompt(); deferred = null; this.classList.add('hide'); }
+    else if(isIOS){ document.getElementById('iosHint').classList.remove('hide'); }
+  });
+  document.getElementById('retryBtn').addEventListener('click', function(){ location.reload(); });
+
+  function probe(url){
+    return new Promise(function(res){
+      var ctrl = ("AbortController" in window) ? new AbortController() : null;
+      var to = setTimeout(function(){ if(ctrl){ try{ctrl.abort();}catch(e){} } res(false); }, 4500);
+      fetch(url + "/?_=" + Date.now(), { mode:"no-cors", cache:"no-store", signal: ctrl ? ctrl.signal : undefined })
+        .then(function(){ clearTimeout(to); res(true); })
+        .catch(function(){ clearTimeout(to); res(false); });
+    });
+  }
+  function reveal(){ var s=document.getElementById('spin'); if(s) s.classList.add('hide'); }
+  async function findLive(){
+    for (var i=0; i<domains.length; i++){ if (await probe(domains[i])) return domains[i]; }
+    return null;
+  }
+
+  (async function(){
+    var live = await findLive();
+    reveal();
+    if (live){
+      var sb = document.getElementById('storeBtn');
+      sb.href = live; sb.classList.remove('hide');
+      if (standalone){
+        document.getElementById('status').textContent = "Entrando na loja…";
+        setTimeout(function(){ window.location.replace(live); }, 600);
+      } else {
+        document.getElementById('status').textContent = "Toque para entrar na loja:";
+        if (isIOS){ document.getElementById('iosHint').classList.remove('hide'); }
+      }
+    } else {
+      document.getElementById('retryBtn').classList.remove('hide');
+      document.getElementById('status').textContent =
+        "A loja está fora do ar no seu provedor agora. Toque no WhatsApp que a gente te passa o acesso na hora 👇";
+    }
+  })();
+
+  if ("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(function(){}); }
+})();
+</script>
+</body>
+</html>
