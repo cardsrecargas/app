@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -12,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cards Recargas">
 <link rel="icon" href="img/cr4-icon-192.png">
-<script src="config.js?_cb=3"></script>
+<script src="config.js?_cb=4"></script>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
@@ -27,31 +28,40 @@
     text-align:center;padding:30px 26px;gap:16px}
   .logo{width:118px;height:118px;border-radius:28px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
   h1{font-size:1.7rem;margin:.3rem 0 0;letter-spacing:.4px}
-  #status{margin:0;opacity:.94;max-width:340px;line-height:1.45}
+  #status{margin:0;opacity:.94;max-width:360px;line-height:1.45}
   .spin{width:32px;height:32px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:330px;margin-top:4px}
+  .btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px;margin-top:4px}
   .btn{position:relative;display:flex;align-items:center;justify-content:center;text-decoration:none;
-    font-weight:800;font-size:1.06rem;padding:16px 18px;border-radius:16px;color:#fff;border:0;cursor:pointer;
+    font-weight:800;font-size:1rem;padding:16px 52px;border-radius:16px;color:#fff;border:0;cursor:pointer;
     font-family:inherit;width:100%}
+  .btn>span:nth-child(2){white-space:nowrap}
   .btn .n{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;
     background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800}
-  .store{background:linear-gradient(135deg,#2563eb,#0ea5e9,#06b6d4)}
-  .store .n{color:#0c4a6e}
-  .wpp{background:#25D366}
-  .wpp .n{color:#0b6b34}
-  .retry{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);font-weight:700}
-  .install{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);font-weight:700;font-size:.98rem;padding:13px 18px}
-  .num{font-size:.85rem;opacity:.85;margin-top:2px}
-  .ios{font-size:.85rem;opacity:.9;max-width:320px;line-height:1.4;margin:2px 0 0}
-  .btn{padding:16px 52px;font-size:1rem}
-  .btn>span:nth-child(2){white-space:nowrap}
   .chip{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;
     background:#fff;display:flex;align-items:center;justify-content:center}
   .chip img{width:36px;height:36px;border-radius:50%}
   .chip svg{display:block}
+  .store{background:linear-gradient(135deg,#2563eb,#0ea5e9,#06b6d4)}
+  .store .n{color:#0c4a6e}
+  .wpp{background:#25D366}
+  .wpp .n{color:#0b6b34}
+  .tg{background:linear-gradient(90deg,#2AABEE,#229ED9)}
+  .tg .n{color:#1c7db5}
+  .retry{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);font-weight:700}
   .install{background:linear-gradient(90deg,#7c3aed,#ec4899);border:0;font-weight:800;font-size:1rem;padding:16px 52px}
   .install .n{color:#a83cc8}
+  .num{font-size:.85rem;opacity:.85;margin-top:2px}
+  .ios{font-size:.85rem;opacity:.9;max-width:320px;line-height:1.4;margin:2px 0 0}
+  .rescue{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;gap:14px}
+  .rescue .alert{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:14px;
+    padding:12px 15px;font-size:.9rem;line-height:1.5}
+  .promo{background:linear-gradient(180deg,rgba(42,171,238,.22),rgba(42,171,238,.08));
+    border:2px solid rgba(42,171,238,.7);border-radius:20px;padding:14px 14px 16px;width:100%}
+  .promo .lbl{font-size:.78rem;font-weight:800;color:#7fd6ff;margin-bottom:10px;letter-spacing:.5px}
+  .promo .desc{font-size:.82rem;color:#cdeeff;margin-top:10px;font-weight:800}
+  .promo .btn{padding:15px 52px}
+  .orsep{font-size:.82rem;color:#c9c1e0;margin:0}
   .hide{display:none}
 </style>
 </head>
@@ -60,12 +70,26 @@
   <h1>Cards Recargas</h1>
   <p id="status">Abrindo a loja…</p>
   <div class="spin" id="spin"></div>
-  <div class="btns">
+
+  <div class="btns" id="normalBox">
     <a class="btn store hide" id="storeBtn" href="#" rel="noopener"><span class="n">1</span><span>Entrar no site da loja</span><span class="chip"><svg width="26" height="26" viewBox="-2 -2 28 28" fill="none" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6" fill="#2563eb"/><circle cx="19" cy="21" r="1.6" fill="#2563eb"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span></a>
     <a class="btn wpp" id="wppBtn" href="#" rel="noopener"><span class="n">2</span><span>Comprar no WhatsApp</span><span class="chip"><svg width="32" height="32" viewBox="0 0 448 512"><path fill="#25d366" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></span></a>
-    <button class="btn retry hide" id="retryBtn" type="button">Tentar de novo</button>
-    <button class="btn install hide" id="installBtn" type="button"><span class="n">3</span><span>Baixar o App da Loja</span><span class="chip"><img src="img/cr4-icon-192.png" alt=""></span></button>
+    <a class="btn tg" id="tgBtn" href="https://t.me/Cardsrecargas_bot" rel="noopener"><span class="n">3</span><span>Comprar pelo Telegram</span><span class="chip"><svg width="30" height="30" viewBox="0 0 240 240"><circle cx="120" cy="120" r="120" fill="#229ED9"/><path fill="#fff" d="M52 118l122-47c6-2 11 1 9 10l-21 98c-1 7-6 8-11 5l-30-22-14 14c-2 2-3 3-6 3l2-31 57-51c2-2 0-3-3-2l-70 44-30-9c-7-2-7-6 2-10z"/></svg></span></a>
+    <button class="btn install hide" id="installBtn" type="button"><span class="n">4</span><span>Baixar o App da Loja</span><span class="chip"><img src="img/cr4-icon-192.png" alt=""></span></button>
   </div>
+
+  <div class="rescue hide" id="rescueBox">
+    <div class="alert">Escolha por onde prefere comprar 👇<br>Entrega do código na hora em qualquer opção.</div>
+    <div class="promo">
+      <div class="lbl">✈️ COMPRE PELO TELEGRAM</div>
+      <a class="btn tg" id="tgBtn2" href="https://t.me/Cardsrecargas_bot" rel="noopener"><span>Comprar pelo Telegram</span><span class="chip"><svg width="30" height="30" viewBox="0 0 240 240"><circle cx="120" cy="120" r="120" fill="#229ED9"/><path fill="#fff" d="M52 118l122-47c6-2 11 1 9 10l-21 98c-1 7-6 8-11 5l-30-22-14 14c-2 2-3 3-6 3l2-31 57-51c2-2 0-3-3-2l-70 44-30-9c-7-2-7-6 2-10z"/></svg></span></a>
+      <div class="desc">⚡ Atendimento e suporte rápido</div>
+    </div>
+    <p class="orsep">— ou —</p>
+    <a class="btn wpp" id="wppBtn2" href="#" rel="noopener"><span>Comprar no WhatsApp</span><span class="chip"><svg width="32" height="32" viewBox="0 0 448 512"><path fill="#25d366" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></span></a>
+    <button class="btn retry" id="retryBtn" type="button" style="max-width:210px;padding:11px 16px;font-size:.85rem">&#8635; Tentar abrir a loja</button>
+  </div>
+
   <div class="num" id="num"></div>
   <p class="ios hide" id="iosHint">No iPhone: toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b> para instalar.</p>
 
@@ -74,8 +98,12 @@
   var cfg = window.CR_CONFIG || {};
   var domains = (cfg.domains && cfg.domains.length) ? cfg.domains.slice() : ["https://unitvmensal.com"];
   var wpp = cfg.whatsapp || "https://wa.me/5541987316829";
+  var tg = cfg.telegram || "https://t.me/Cardsrecargas_bot";
   var num = cfg.whatsappNumber || "";
   document.getElementById('wppBtn').href = wpp;
+  document.getElementById('wppBtn2').href = wpp;
+  document.getElementById('tgBtn').href = tg;
+  document.getElementById('tgBtn2').href = tg;
   if(num){ document.getElementById('num').textContent = "WhatsApp " + num; }
 
   var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
@@ -121,9 +149,9 @@
         if (isIOS){ document.getElementById('iosHint').classList.remove('hide'); }
       }
     } else {
-      document.getElementById('retryBtn').classList.remove('hide');
-      document.getElementById('status').textContent =
-        "A loja está fora do ar no seu provedor agora. Toque no WhatsApp que a gente te passa o acesso na hora 👇";
+      document.getElementById('normalBox').classList.add('hide');
+      document.getElementById('rescueBox').classList.remove('hide');
+      document.getElementById('status').classList.add('hide');
     }
   })();
 
